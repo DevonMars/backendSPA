@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 const StoreSchema = new Schema({
     title: String,
     address: String,
+    imagePath: String,
     beers: [{
         type: Schema.Types.ObjectId,
         ref: 'beer'

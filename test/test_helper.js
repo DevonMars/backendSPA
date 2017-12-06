@@ -5,12 +5,16 @@
 const mongoose = require('mongoose');
 const config = require('../config/env/env');
 
-mongoose.Promise = global.Promise;
+
 
 before((done) => {
-    mongoose.connect('mongodb://' + config.env.dbHost + ':' + config.env.dbPort + '/' + config.env.dbDatabase);
+    mongoose.Promise = global.Promise;
+    mongoose.connect('mongodb://localhost/wijbieren_test');
     mongoose.connection
-        .once("open", () => done())
+        .once('open', () => {
+            console.log('Connected to Mongo on wijbieren_test');
+            done();
+        })
         .on("error", (error) => {
             console.warn('Warning', error);
         });
@@ -18,13 +22,12 @@ before((done) => {
 
 
 beforeEach((done) => {
-    const { citys, stores, beers } = mongoose.connection.collections;
-    citys.drop(() => {
+    const { cities, stores, beers } = mongoose.connection.collections;
+    cities.drop(() => {
         stores.drop(() => {
-            beers.drop(() => {
-                done();
-            });
+            done();
         });
+
     });
 });
 

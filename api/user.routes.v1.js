@@ -3,8 +3,7 @@
 //
 var express = require('express');
 var routes = express.Router();
-var mongodb = require('../config/mongo.db');
-var User = require('../model/user.model');
+var User = require('./user.model');
 
 //
 // Geef een lijst van alle users.

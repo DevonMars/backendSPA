@@ -4,7 +4,7 @@
   "description": "Node server met API naar mongodb database",
   "main": "server.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/_mocha ./test/*test.js --reporter spec",
+    "test": "SET NODE_ENV=test & nodemon --exec \"mocha --recursive -R min\"",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -30,7 +30,8 @@
     "jwt-simple": "^0.5.1",
     "moment": "^2.18.1",
     "mongoose": "4.8.x",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "neo4j-driver": "^1.5.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -39,6 +40,7 @@
     "gulp-istanbul": "^1.1.2",
     "gulp-mocha": "^4.3.1",
     "mocha": "^3.3.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "supertest": "^3.0.0"
   }
 }
