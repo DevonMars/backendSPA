@@ -20,75 +20,59 @@ module.exports = {
                     "RETURN a AS beer, b AS Brewery, k AS Kind, p AS Alcohol"
                 )
             .then((result) => {
-
-            var fields = [];
             var beers = [];
                 result.records.forEach((record) => {
-                    // res.status(200).send(record.fields[0]);
-                    // var beer = {};
-                    // beer.brand = record._fields[1].properties.brand;
 
                     beers.push({
-                        id: record._fields[0].identity.low,
+                        _id: record._fields[0].properties._id,
                         brand: record._fields[0].properties.brand,
+                        imagePath: record._fields[0].properties.imagePath,
                         brewery: record._fields[1].properties.name,
                         kind: record._fields[2].properties.name,
                         percentage: record._fields[3].properties.percentage
                     });
-                    // fields.push(record._fields);
-                    // console.log(record._fields);
                 });
                 res.status(200).send(beers);
-                // res.status(200).send(fields);
             })
             .catch((error) => res.status(400).send({error: error.message}));
-
-
-        // Beer.find({})
-        //     .then((beers) => {
-        //         // console.log(users);
-        //         res.status(200).json(beers);
-        //     })
-        //     .catch((error) => res.status(400).send({error: error.message}));
     },
 
     create(req, res, next) {
         const beerProps = req.body;
+        const imagePath = beerProps.imagePath;
+        const id = beerProps.id;
         const brand = beerProps.brand;
         const kind = beerProps.kind;
         const percentage = beerProps.percentage;
         const brewery = beerProps.brewery;
 
         session.run(
-            "CREATE (beer:Beer{brand: {brandParam}) " +
-            "MERGE (kind:Kind{name: {kindParam}) " +
+            "CREATE (beer:Beer{brand: {brandParam}, _id: {idParam}, imagePath: {imageParam}}) " +
+            "MERGE (kind:Kind{name: {kindParam}}) " +
             "MERGE (beer)-[:IS_OF_KIND]->(kind) " +
-            "MERGE (percentage:Alcohol{percentage: {percentageParam}) " +
+            "MERGE (percentage:Alcohol{percentage: {percentageParam}}) " +
             "MERGE (beer)-[:HAS_PERCENTAGE]->(percentage) " +
-            "MERGE (brewery:Brewery{name: {breweryParam}) " +
+            "MERGE (brewery:Brewery{name: {breweryParam}}) " +
             "MERGE (beer)-[:BREWED_IN]->(brewery) " +
             "RETURN beer, kind, percentage, brewery;",
-            {brandParam: brand, kindParam: kind, percentageParam: percentage, breweryParam: brewery}
+            {imageParam: imagePath, idParam: id, brandParam: brand, kindParam: kind,
+                percentageParam: percentage, breweryParam: brewery
+            }
         )
         .then((result) => {
             var beer = {};
             result.records.forEach((record) => {
-                // res.status(200).send(record.fields[0]);
-                // var beer = {};
-                // beer.brand = record._fields[1].properties.brand;
 
                 beer = {
-                    id: record._fields[0].identity.low,
+                    _id: record._fields[0].identity.low,
                     brand: record._fields[0].properties.brand,
+                    imagePath: record._fields[0].properties.imagePath,
                     brewery: record._fields[1].properties.name,
                     kind: record._fields[2].properties.name,
                     percentage: record._fields[3].properties.percentage
                 };
-                // fields.push(record._fields);
-                // console.log(record._fields);
             });
             res.status(200).send(beer);
-
         })
         .catch((error) => res.status(400).send({error: error.message}));
         // Beer.create(beerProps)
