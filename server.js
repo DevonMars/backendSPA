@@ -25,14 +25,14 @@ module.exports = {};
 
 
 
-// if (process.env.NODE_ENV !== 'test') {
-//     mongoose.connect(config.dburl);
-//     var connection = mongoose.connection
-//         .once('open', () => console.log('Connected to Mongo on ' + config.dburl))
-//         .on('error', (error) => {
-//             console.warn('Warning', error.toString());
-//         });
-// }
+if (process.env.NODE_ENV !== 'test') {
+    mongoose.connect(config.dburl);
+    var connection = mongoose.connection
+        .once('open', () => console.log('Connected to Mongo on ' + config.dburl))
+        .on('error', (error) => {
+            console.warn('Warning', error.toString());
+        });
+}
 
 // bodyParser zorgt dat we de body uit een request kunnen gebruiken,
 // hierin zit de inhoud van een POST request.
@@ -77,8 +77,16 @@ app.use(function (req, res, next) {
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-    // Pass to next layer of middleware
-    next();
+
+    // Check if Preflight Request
+    if (req.method === 'OPTIONS') {
+        res.status(200);
+        res.end();
+    }
+    else {
+        // Pass to next layer of middleware
+        next();
+    }
 });
 
 // Installeer de routers

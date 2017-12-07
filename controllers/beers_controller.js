@@ -40,7 +40,7 @@ module.exports = {
     create(req, res, next) {
         const beerProps = req.body;
         const imagePath = beerProps.imagePath;
-        const id = beerProps.id;
+        const id = beerProps._id;
         const brand = beerProps.brand;
         const kind = beerProps.kind;
         const percentage = beerProps.percentage;
@@ -74,7 +74,10 @@ module.exports = {
             });
             res.status(200).send(beer);
         })
-        .catch((error) => res.status(400).send({error: error.message}));
+        .catch((error) => {
+            console.log(error);
+            res.status(400).send({error: error.message})
+        });
         // Beer.create(beerProps)
         //     .then(beer => res.status(201).send(beer))
         //     .catch((error) => res.status(400).send({error: error.message}));
