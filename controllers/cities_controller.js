@@ -7,6 +7,7 @@ module.exports = {
 
     get(req, res, next) {
         City.find({})
+            .populate('stores')
             .then((cities) => {
                 // console.log(users);
                 res.status(200).json(cities);
@@ -15,7 +16,17 @@ module.exports = {
     },
 
     create(req, res, next) {
-        const cityProps = req.body;
+        const body = req.body;
+
+        const cityProps = {
+            title: body.title,
+            description: body.description,
+            province: body.province,
+            imagePath: body.imagePath,
+            stores: body.stores
+        };
+
+
         City.create(cityProps)
             .then(city => res.status(201).send(city))
             .catch((error) => res.status(400).send({error: error.message}));

@@ -1,17 +1,29 @@
 var env = {
     webPort: process.env.PORT || 3000,
-    dbHost: process.env.DB_HOST || 'localhost',
-    dbPort: process.env.DB_PORT || '',
-    dbUser: process.env.DB_USER || '',
-    dbPassword: process.env.DB_PASSWORD || '',
-    dbDatabase: process.env.DB_DATABASE || 'wijbieren'
+    mongodbHost: process.env.DB_HOST || 'localhost',
+    mongodbPort: process.env.DB_PORT || '',
+    mongodbUser: process.env.DB_USER || '',
+    mongodbPassword: process.env.DB_PASSWORD || '',
+    mongodbDatabase: process.env.DB_DATABASE || 'wijbieren',
+    neo4jHost: process.env.DB_HOST || 'localhost',
+    neo4jPort: process.env.DB_PORT || '',
+    neo4jUser: process.env.DB_USER || 'neo4j',
+    neo4jPassword: process.env.DB_PASSWORD || '91h8472dUp#3',
 }
 
-var dburl = process.env.NODE_ENV === 'production' ?
-    'mongodb://' + env.dbUser + ':' + env.dbPassword + '@' + env.dbHost + ':' + env.dbPort + '/' + env.dbDatabase :
-    'mongodb://localhost/' + env.dbDatabase;
+var mongodburl = process.env.NODE_ENV === 'production' ?
+    'mongodb://' + env.mongodbUser + ':' + env.mongodbPassword + '@' + env.mongodbHost + ':' + env.mongodbPort + '/' + env.mongodbDatabase :
+    'mongodb://localhost/' + env.mongodbDatabase;
+
+var neo4jhost = process.env.NODE_ENV === 'production' ?
+    'still have to implement' :
+    'bolt://' + env.neo4jHost;
+
+
+
 
 module.exports = {
     env: env,
-    dburl: dburl
+    mongodburl: mongodburl,
+    neo4jhost: neo4jhost
 };

@@ -16,7 +16,7 @@ describe('Stores controller', () => {
     it('Post to /api/stores creates a new store', (done) => {
         Store.count().then(count => {
             request(app)
-                .post('/stores')
+                .post('/api/v1/stores')
                 .send({
                     title: 'De BierFanaat',
                     address: 'PiempeloerusStraat 43'
@@ -36,7 +36,7 @@ describe('Stores controller', () => {
 
         store.save().then(() => {
             request(app)
-                .put(`/stores/${store._id}`)
+                .put(`/api/v1/stores/${store._id}`)
                 .send({address: 'BierBuik 23'})
                 .end(() => {
                     Store.findOne({title: 'De BierFanaat'})
@@ -54,7 +54,7 @@ describe('Stores controller', () => {
 
         store.save().then(() => {
             request(app)
-                .delete(`/stores/${store._id}`)
+                .delete(`/api/v1/stores/${store._id}`)
                 .end(() => {
                     Store.findOne({title: 'De BierFanaat'})
                         .then((store) => {

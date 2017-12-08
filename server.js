@@ -2,15 +2,17 @@
 // server.js
 //
 var http = require('http');
+const mongoose = require('mongoose');
 var express = require('express');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 // var auth_routes_v1 = require('./api/authentication.routes.v1');
 var config = require('./config/env/env');
-const mongoose = require('mongoose');
+
+var beer_routes_v1 = require('./routes/v1/beer.routes.v1');
 var city_routes_v1 = require('./routes/v1/city.routes.v1');
 var store_routes_v1 = require('./routes/v1/store.routes.v1');
-var beer_routes_v1 = require('./routes/v1/beer.routes.v1');
+
 
 
 // var expressJWT = require('express-jwt');
@@ -26,9 +28,9 @@ module.exports = {};
 
 
 if (process.env.NODE_ENV !== 'test') {
-    mongoose.connect(config.dburl);
+    mongoose.connect(config.mongodburl);
     var connection = mongoose.connection
-        .once('open', () => console.log('Connected to Mongo on ' + config.dburl))
+        .once('open', () => console.log('Connected to Mongo on ' + config.mongodburl))
         .on('error', (error) => {
             console.warn('Warning', error.toString());
         });
@@ -60,7 +62,7 @@ app.set('env', (process.env.ENV || 'development'));
 
 // wanneer je je settings wilt controleren
 // console.dir(config);
-// console.log(config.dburl);
+// console.log(config.mongodburl);
 
 // Installeer Morgan als logger
 app.use(logger('dev'));
@@ -91,9 +93,10 @@ app.use(function (req, res, next) {
 
 // Installeer de routers
 
-beer_routes_v1(app);
+
 city_routes_v1(app);
 store_routes_v1(app);
+beer_routes_v1(app);
 
 
 

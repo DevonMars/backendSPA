@@ -1,68 +1,100 @@
 /**
  * Created by twanv on 4-12-2017.
  */
-
 const assert = require('assert');
 const request = require('supertest');
-const app = require('../../server');
 const mongoose = require('mongoose');
+const app = require('../../server');
+const session = require ('../../config/neo4j/neo4j');
+
 const Beer = mongoose.model('beer');
 
-
-
-
-
-describe('Stores controller', () => {
+describe('Beers controller', () => {
 
     it('Post to /beers creates a new beer', (done) => {
         Beer.count().then(count => {
             request(app)
-                .post('/beers')
+                .post('/api/v1/beers')
                 .send({
-                    title: 'De BierFanaat',
-                    address: 'PiempeloerusStraat 43'
+                    imagePath: '',
+                    _id: '',
+                    brand: 'Heineken',
+                    kind: 'Bruin',
+                    percentage: '8%',
+                    brewery: 'HeinekenInc',
                 })
                 .end(() => {
                     Beer.count().then(newCount => {
                         console.log('count: ' + newCount);
                         assert(count + 1 === newCount);
-                        done();
+
+                        session
+                            .run(
+                                "MATCH (n:Beer) RETURN n"
+                            )
+                            .then((result) => {
+                                assert(result.records.length === 1);
+                                done();
+                            })
                     });
+
+
                 });
         });
     });
 
-    it('Put to /stores/:id edits an existing store', (done) => {
-        const store = new Beer({title: 'De BierFanaat', address: 'PiempeloerusStraat 43'});
+    it('Put to /beers/:id edits an existing beer', (done) => {
+        const beer = new Beer({brand: 'Heineken'});
+        const id = beer._id.toString();
+        console.log('beer-_id: ' + id);
+        const brand = beer.brand;
 
-        store.save().then(() => {
+        beer.save().then(() => {
             request(app)
-                .put(`/stores/${store._id}`)
-                .send({address: 'BierBuik 23'})
+                .put(`/api/v1/beers/${id}`)
+                .send({brand: 'Heineken2'})
                 .end(() => {
-                    Beer.findOne({title: 'De BierFanaat'})
-                        .then(store => {
-                            console.log('city: ' + store.title);
-                            assert(store.address === 'BierBuik 23');
+                    Beer.findOne({brand: 'Heineken2'})
+                        .then(updatedBeer => {
+                            console.log(id);
+                            console.log(updatedBeer._id);
+                            assert(updatedBeer._id.toString() === id);
                             done();
+
                         });
                 });
         });
+
+        // session.run(
+        //     "CREATE (beer:Beer{brand: {brandParam}, _id: {idParam}})",
+        //     {idParam: id, brandParam: brand}
+        // )
     });
 
-    it('Delete to /stores/:id deletes an existing store', (done) => {
-        const store = new Beer({title: 'De BierFanaat'});
+    it('Delete to /beers/:id deletes an existing beer', (done) => {
+        const beer = new Beer({brand: 'De BierFanaat'});
 
-        store.save().then(() => {
+        beer.save().then(() => {
             request(app)
-                .delete(`/stores/${store._id}`)
+                .delete(`/api/v1/beers/${beer._id}`)
                 .end(() => {
-                    Beer.findOne({title: 'De BierFanaat'})
-                        .then((store) => {
-                            assert(store === null);
-                            done();
-                        })
+                    Beer.findOne({brand: 'De BierFanaat'})
+                        .then((beer) => {
+                            assert(beer === null);
+
+                            session
+                                .run(
+                                    "MATCH (n:Beer{brand: 'De BierFanaat'}) RETURN n"
+                                )
+                                .then((result) => {
+
+                                    assert(result.records.length === 0);
+                                    done();
+                                })
+                        });
+
                 });
+
         });
     });
 });

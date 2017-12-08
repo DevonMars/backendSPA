@@ -3,8 +3,9 @@
  */
 const assert = require('assert');
 const request = require('supertest');
-const app = require('../../server');
 const mongoose = require('mongoose');
+const app = require('../../server');
+
 const City = mongoose.model('city');
 
 describe('Cities controller', () => {
@@ -12,7 +13,7 @@ describe('Cities controller', () => {
     it('Post to /api/cities creates a new city', (done) => {
         City.count().then(count => {
             request(app)
-                .post('/cities')
+                .post('/api/v1/cities')
                 .send({
                     title: 'Tilburg',
                     description: 'mooie stad'
@@ -32,7 +33,7 @@ describe('Cities controller', () => {
 
         city.save().then(() => {
             request(app)
-                .put(`/cities/${city._id}`)
+                .put(`/api/v1/cities/${city._id}`)
                 .send({description: 'mooi'})
                 .end(() => {
                     City.findOne({title: 'Tilburg'})
@@ -50,7 +51,7 @@ describe('Cities controller', () => {
 
         city.save().then(() => {
             request(app)
-                .delete(`/cities/${city._id}`)
+                .delete(`/api/v1/cities/${city._id}`)
                 .end(() => {
                     City.findOne({title: 'Tilburg'})
                         .then((city) => {

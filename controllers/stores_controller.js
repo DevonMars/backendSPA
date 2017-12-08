@@ -7,6 +7,7 @@ module.exports = {
 
     get(req, res, next) {
         Store.find({})
+            .populate('beers')
             .then((stores) => {
                 // console.log(users);
                 res.status(200).json(stores);
@@ -15,7 +16,15 @@ module.exports = {
     },
 
     create(req, res, next) {
-        const storeProps = req.body;
+        const body = req.body;
+
+        const storeProps = {
+            title: body.title,
+            address: body.address,
+            imagePath: body.imagePath,
+            beers: body.beers
+        };
+
         Store.create(storeProps)
             .then(store => res.status(201).send(store))
             .catch((error) => res.status(400).send({error: error.message}));

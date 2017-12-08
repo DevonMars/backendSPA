@@ -4,6 +4,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+
 const BeerSchema = new Schema({
     brand: String,
     stores: [{
@@ -13,6 +15,8 @@ const BeerSchema = new Schema({
 }, {
     timestamps: true
 });
+
+
 
 const Beer = mongoose.model('beer', BeerSchema);
 
