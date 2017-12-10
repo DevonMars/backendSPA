@@ -35,7 +35,7 @@ module.exports = {
         const storeProps = req.body;
 
         Store.findByIdAndUpdate({_id: storeId}, storeProps)
-            .then(() => Store.findById({_id: storeId}))
+            .then(() => Store.findById({_id: storeId}).populate('beers'))
             .then(store => res.status(201).send(store))
             .catch((error) => res.status(400).send(({error: error.message})));
     },

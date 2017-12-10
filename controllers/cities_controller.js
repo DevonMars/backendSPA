@@ -37,7 +37,7 @@ module.exports = {
         const cityProps = req.body;
 
         City.findByIdAndUpdate({_id: cityId}, cityProps)
-            .then(() => City.findById({_id: cityId}))
+            .then(() => City.findById({_id: cityId}).populate('stores'))
             .then(city => res.status(201).send(city))
             .catch((error) => res.status(400).send(({error: error.message})));
     },

@@ -41,7 +41,7 @@ describe('Stores controller', () => {
                 .end(() => {
                     Store.findOne({title: 'De BierFanaat'})
                         .then(store => {
-                            console.log('city: ' + store.title);
+                            console.log('Store: ' + store.title);
                             assert(store.address === 'BierBuik 23');
                             done();
                         });

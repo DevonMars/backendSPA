@@ -13,18 +13,8 @@ var beer_routes_v1 = require('./routes/v1/beer.routes.v1');
 var city_routes_v1 = require('./routes/v1/city.routes.v1');
 var store_routes_v1 = require('./routes/v1/store.routes.v1');
 
-
-
 // var expressJWT = require('express-jwt');
 var app = express();
-
-// Met module.exports kunnen we variabelen beschikbaar maken voor andere bestanden.
-// Je zou dit kunnen vergelijken met het 'public' maken van attributen in Java.
-// Javascript neemt impliciet aan dat bovenaan ieder bestand de volgende regel staat.
-// Deze kun je dus weglaten!
-// Zie eventueel ook: https://www.sitepoint.com/understanding-module-exports-exports-node-js/  
-module.exports = {};
-
 
 
 if (process.env.NODE_ENV !== 'test') {
