@@ -7,6 +7,8 @@ const BeersController = require('../../controllers/beers_controller');
 module.exports = (app) => {
     app.get('/api/v1/beers', BeersController.get);
 
+    app.get('/api/v1/beers/:id', BeersController.getId);
+
     app.post('/api/v1/beers', BeersController.create);
 
     app.put('/api/v1/beers/:id', BeersController.edit);

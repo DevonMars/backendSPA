@@ -10,6 +10,38 @@ const City = mongoose.model('city');
 
 describe('Cities controller', () => {
 
+    it('Get to /api/cities gets all cities', (done) => {
+
+        const city = new City({title: 'Tilburg'});
+
+        city.save().then(() => {
+            request(app)
+                .get('/api/v1/cities')
+                .then((response) => {
+                console.log("city: " + JSON.stringify(response.body));
+                    assert(response.body[0].title === 'Tilburg');
+                    done();
+                });
+        });
+
+    });
+
+    it('Get to /api/cities/:id gets one city', (done) => {
+
+        const city = new City({title: 'Tilburg'});
+
+        city.save().then(() => {
+            request(app)
+                .get(`/api/v1/cities/${city._id}`)
+                .then((response) => {
+                    console.log("city: " + JSON.stringify(response.body._id));
+                    assert(response.body._id === city._id.toString());
+                    done();
+                });
+        });
+
+    });
+
     it('Post to /api/cities creates a new city', (done) => {
         City.count().then(count => {
             request(app)

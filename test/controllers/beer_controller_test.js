@@ -11,6 +11,54 @@ const Beer = mongoose.model('beer');
 
 describe('Beers controller', () => {
 
+    it('Get to /api/beers gets all beers', (done) => {
+
+        request(app)
+            .post('/api/v1/beers')
+            .send({
+                imagePath: '',
+                _id: '',
+                brand: 'Heineken',
+                kind: 'Bruin',
+                percentage: '8%',
+                brewery: 'HeinekenInc',
+            })
+            .then(() => {
+                request(app)
+                    .get('/api/v1/beers')
+                    .then((response) => {
+                        console.log("beer: " + JSON.stringify(response.body));
+                        assert(response.body[0].brand === 'Heineken');
+                        done();
+                    })
+            });
+
+    });
+
+    it('Get to /api/beers/:id gets one beer', (done) => {
+
+        request(app)
+            .post('/api/v1/beers')
+            .send({
+                imagePath: '',
+                _id: '',
+                brand: 'Heineken',
+                kind: 'Bruin',
+                percentage: '8%',
+                brewery: 'HeinekenInc',
+            })
+            .then((response) => {
+                request(app)
+                    .get(`/api/v1/beers/${response.body._id}`)
+                    .then((response) => {
+                        console.log("beer: " + JSON.stringify(response.body));
+                        assert(response.body.brand === 'Heineken');
+                        done();
+                    })
+            });
+
+    });
+
     it('Post to /beers creates a new beer', (done) => {
         Beer.count().then(count => {
             request(app)

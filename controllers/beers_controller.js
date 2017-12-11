@@ -35,6 +35,38 @@ module.exports = {
             .catch((error) => res.status(400).send({error: error.message}));
     },
 
+    getId(req, res, next) {
+
+        const id =req.params.id;
+
+        session
+            .run(
+                "MATCH (a:Beer)-[:BREWED_IN]->(b:Brewery), " +
+                "(a)-[:IS_OF_KIND]->(k:Kind), " +
+                "(a)-[:HAS_PERCENTAGE]->(p:Alcohol) " +
+                "WHERE a._id = {idParam}" +
+                "RETURN a AS beer, b AS Brewery, k AS Kind, p AS Alcohol",
+                {idParam: id}
+            )
+            .then((result) => {
+                var beer = {};
+                result.records.forEach((record) => {
+
+                    beer = {
+                        _id: record._fields[0].properties._id,
+                        brand: record._fields[0].properties.brand,
+                        imagePath: record._fields[0].properties.imagePath,
+                        brewery: record._fields[1].properties.name,
+                        kind: record._fields[2].properties.name,
+                        percentage: record._fields[3].properties.percentage
+                    };
+                });
+                session.close();
+                res.status(200).send(beer);
+            })
+            .catch((error) => res.status(400).send({error: error.message}));
+    },
+
     create(req, res, next) {
         const beerProps = req.body;
         const imagePath = beerProps.imagePath;

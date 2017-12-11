@@ -15,6 +15,18 @@ module.exports = {
             .catch((error) => res.status(400).send({error: error.message}));
     },
 
+    getId(req, res, next) {
+        const cityId = req.params.id;
+
+        City.findOne({_id: cityId})
+            .populate('stores')
+            .then((city) => {
+                // console.log(users);
+                res.status(200).json(city);
+            })
+            .catch((error) => res.status(400).send({error: error.message}));
+    },
+
     create(req, res, next) {
         const body = req.body;
 

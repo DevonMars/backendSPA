@@ -17,14 +17,14 @@ var store_routes_v1 = require('./routes/v1/store.routes.v1');
 var app = express();
 
 
-if (process.env.NODE_ENV !== 'test') {
-    mongoose.connect(config.mongodburl);
-    var connection = mongoose.connection
-        .once('open', () => console.log('Connected to Mongo on ' + config.mongodburl))
-        .on('error', (error) => {
-            console.warn('Warning', error.toString());
-        });
-}
+// if (process.env.NODE_ENV !== 'test') {
+//     mongoose.connect(config.mongodburl);
+//     var connection = mongoose.connection
+//         .once('open', () => console.log('Connected to Mongo on ' + config.mongodburl))
+//         .on('error', (error) => {
+//             console.warn('Warning', error.toString());
+//         });
+// }
 
 // bodyParser zorgt dat we de body uit een request kunnen gebruiken,
 // hierin zit de inhoud van een POST request.

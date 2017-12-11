@@ -13,6 +13,38 @@ const app = require('../../server');
 
 describe('Stores controller', () => {
 
+    it('Get to /api/stores gets all stores', (done) => {
+
+        const store = new Store({title: 'BierWinkel'});
+
+        store.save().then(() => {
+            request(app)
+                .get('/api/v1/stores')
+                .then((response) => {
+                    console.log("city: " + JSON.stringify(response.body));
+                    assert(response.body[0].title === 'BierWinkel');
+                    done();
+                });
+        });
+
+    });
+
+    it('Get to /api/stores/:id gets one store', (done) => {
+
+        const store = new Store({title: 'BierWinkel'});
+
+        store.save().then(() => {
+            request(app)
+                .get(`/api/v1/stores/${store._id}`)
+                .then((response) => {
+                    console.log("store: " + JSON.stringify(response.body._id));
+                    assert(response.body._id === store._id.toString());
+                    done();
+                });
+        });
+
+    });
+
     it('Post to /api/stores creates a new store', (done) => {
         Store.count().then(count => {
             request(app)
