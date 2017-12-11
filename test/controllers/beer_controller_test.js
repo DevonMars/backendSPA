@@ -92,57 +92,67 @@ describe('Beers controller', () => {
     });
 
     it('Put to /beers/:id edits an existing beer', (done) => {
-        const beer = new Beer({brand: 'Heineken'});
-        const id = beer._id.toString();
-        console.log('beer-_id: ' + id);
-        const brand = beer.brand;
 
-        beer.save().then(() => {
-            request(app)
-                .put(`/api/v1/beers/${id}`)
-                .send({brand: 'Heineken2'})
-                .end(() => {
-                    Beer.findOne({brand: 'Heineken2'})
-                        .then(updatedBeer => {
-                            console.log(id);
-                            console.log(updatedBeer._id);
-                            assert(updatedBeer._id.toString() === id);
-                            done();
+        request(app)
+            .post('/api/v1/beers')
+            .send({
+                imagePath: '',
+                _id: '',
+                brand: 'Heineken',
+                kind: 'Bruin',
+                percentage: '8%',
+                brewery: 'HeinekenInc',
+            })
+            .then((response) => {
+                request(app)
+                    .put(`/api/v1/beers/${response.body._id}`)
+                    .send({brand: 'Heineken2'})
+                    .then((response) => {
+                        assert(response.body.brand === 'Heineken2');
+                        const beerId = response.body._id;
 
-                        });
-                });
-        });
-
-        // session.run(
-        //     "CREATE (beer:Beer{brand: {brandParam}, _id: {idParam}})",
-        //     {idParam: id, brandParam: brand}
-        // )
+                        Beer.findOne({_id: beerId})
+                            .then(updatedBeer => {
+                                assert(updatedBeer.brand === 'Heineken2');
+                                done();
+                            });
+                    })
+            });
     });
 
     it('Delete to /beers/:id deletes an existing beer', (done) => {
-        const beer = new Beer({brand: 'De BierFanaat'});
 
-        beer.save().then(() => {
-            request(app)
-                .delete(`/api/v1/beers/${beer._id}`)
-                .end(() => {
-                    Beer.findOne({brand: 'De BierFanaat'})
-                        .then((beer) => {
-                            assert(beer === null);
 
-                            session
-                                .run(
-                                    "MATCH (n:Beer{brand: 'De BierFanaat'}) RETURN n"
-                                )
-                                .then((result) => {
+        request(app)
+            .post('/api/v1/beers')
+            .send({
+                imagePath: '',
+                _id: '',
+                brand: 'Heineken',
+                kind: 'Bruin',
+                percentage: '8%',
+                brewery: 'HeinekenInc',
+            })
+            .then((response) => {
+                request(app)
+                    .delete(`/api/v1/beers/${response.body._id}`)
+                    .then(() => {
+                        Beer.findOne({brand: 'Heineken'})
+                            .then((beer) => {
+                                assert(beer === null);
 
-                                    assert(result.records.length === 0);
-                                    done();
-                                })
-                        });
+                                session
+                                    .run(
+                                        "MATCH (n:Beer{brand: 'De BierFanaat'}) RETURN n"
+                                    )
+                                    .then((result) => {
 
-                });
+                                        assert(result.records.length === 0);
+                                        done();
+                                    });
+                            });
+                    });
+            });
 
-        });
     });
 });

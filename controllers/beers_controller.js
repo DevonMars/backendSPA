@@ -69,12 +69,12 @@ module.exports = {
 
     create(req, res, next) {
         const beerProps = req.body;
-        const imagePath = beerProps.imagePath;
+        const imagePath = beerProps.imagePath || '';
         var id = '';
-        const brand = beerProps.brand;
-        const kind = beerProps.kind;
-        const percentage = beerProps.percentage;
-        const brewery = beerProps.brewery;
+        const brand = beerProps.brand || '';
+        const kind = beerProps.kind || '';
+        const percentage = beerProps.percentage || '';
+        const brewery = beerProps.brewery || '';
 
         const mongoDbBeerProps = {
             imagePath: imagePath,
@@ -128,13 +128,13 @@ module.exports = {
     },
 
     edit(req, res, next) {
-        const beerId = req.params.id + '';
-        const beerProps = req.body;
-        const imagePath = beerProps.imagePath;
-        const brand = beerProps.brand;
-        const kind = beerProps.kind;
-        const percentage = beerProps.percentage;
-        const brewery = beerProps.brewery;
+        const beerId = req.params.id + '' || '';
+        const beerProps = req.body || '';
+        const imagePath = beerProps.imagePath || '';
+        const brand = beerProps.brand || '';
+        const kind = beerProps.kind || '';
+        const percentage = beerProps.percentage || '';
+        const brewery = beerProps.brewery || '';
 
         Beer.findByIdAndUpdate({_id: beerId}, beerProps)
             .then(() => Beer.findById({_id: beerId}))

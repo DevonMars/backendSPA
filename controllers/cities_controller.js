@@ -29,13 +29,18 @@ module.exports = {
 
     create(req, res, next) {
         const body = req.body;
+        const title = body.title;
+        const description = body.description;
+        const province = body.province;
+        const imagePath = body.imagePath;
+        const stores = body.stores;
 
         const cityProps = {
-            title: body.title,
-            description: body.description,
-            province: body.province,
-            imagePath: body.imagePath,
-            stores: body.stores
+            title: title,
+            description: description,
+            province: province,
+            imagePath: imagePath,
+            stores: stores
         };
 
 
