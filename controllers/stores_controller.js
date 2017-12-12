@@ -6,7 +6,19 @@ const Store = require('../models/store.model');
 module.exports = {
 
     get(req, res, next) {
-        Store.find({})
+        let firstLetter = req.query.firstLetter || '';
+
+        let searchObject = {};
+
+        let regexp;
+        if (firstLetter !== '') {
+            regexp = new RegExp("^" + firstLetter, 'i');
+            searchObject.title = regexp;
+        } else {
+            firstLetter = '';
+        }
+
+        Store.find(searchObject)
             .populate('beers')
             .then((stores) => {
                 // console.log(users);
