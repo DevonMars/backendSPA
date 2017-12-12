@@ -6,7 +6,20 @@ const City = require('../models/city.model');
 module.exports = {
 
     get(req, res, next) {
-        City.find({})
+        let firstLetter = req.query.firstLetter || '';
+
+        let searchObject = {};
+
+        let regexp;
+        if (firstLetter !== '') {
+            regexp = new RegExp("^" + firstLetter, 'i');
+            searchObject.title = regexp;
+        } else {
+            firstLetter = '';
+        }
+
+        console.log('firstLetter: ' + firstLetter);
+        City.find(searchObject)
             .populate('stores')
             .then((cities) => {
                 // console.log(users);
