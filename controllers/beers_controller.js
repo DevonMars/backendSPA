@@ -32,7 +32,7 @@ module.exports = {
                 session.close();
                 res.status(200).send(beers);
             })
-            .catch((error) => res.status(400).send({error: error.message}));
+            .catch((error) => res.status(400).send({message: error.message}));
     },
 
     getId(req, res, next) {
@@ -64,7 +64,7 @@ module.exports = {
                 session.close();
                 res.status(200).send(beer);
             })
-            .catch((error) => res.status(400).send({error: error.message}));
+            .catch((error) => res.status(400).send({message: error.message}));
     },
 
     create(req, res, next) {
@@ -102,27 +102,27 @@ module.exports = {
                         percentageParam: percentage, breweryParam: brewery
                     }
                 )
-                    .then((result) => {
-                        var beer = {};
-                        result.records.forEach((record) => {
-                            beer = {
-                                _id: record._fields[0].properties._id,
-                                brand: record._fields[0].properties.brand,
-                                imagePath: record._fields[0].properties.imagePath,
-                                kind: record._fields[1].properties.name,
-                                percentage: record._fields[2].properties.percentage,
-                                brewery: record._fields[3].properties.name
-                            };
-                        });
-                        session.close();
-                        res.status(200).send(beer);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        res.status(400).send({error: error.message})
+                .then((result) => {
+                    var beer = {};
+                    result.records.forEach((record) => {
+                        beer = {
+                            _id: record._fields[0].properties._id,
+                            brand: record._fields[0].properties.brand,
+                            imagePath: record._fields[0].properties.imagePath,
+                            kind: record._fields[1].properties.name,
+                            percentage: record._fields[2].properties.percentage,
+                            brewery: record._fields[3].properties.name
+                        };
                     });
+                    session.close();
+                    res.status(200).send(beer);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.status(400).send({message: error.message})
+                });
             })
-            .catch((error) => res.status(400).send({error: error.message}));
+            .catch((error) => res.status(400).send({message: error.message}));
 
 
     },
@@ -181,9 +181,9 @@ module.exports = {
                                 res.status(200).send(beer);
                             })
                     })
-                    .catch((error) => res.status(400).send(({error: error.message})));
+                    .catch((error) => res.status(400).send(({message: error.message})));
             })
-            .catch((error) => res.status(400).send(({error: error.message})));
+            .catch((error) => res.status(400).send(({message: error.message})));
 
 
 
@@ -211,9 +211,9 @@ module.exports = {
                         res.status(202).send(json);
 
                     })
-                    .catch((error) => res.status(404).send({error: error.message}));
+                    .catch((error) => res.status(404).send({message: error.message}));
             })
-            .catch((error) => res.status(404).send({error: error.message}));
+            .catch((error) => res.status(404).send({message: error.message}));
 
 
     }
