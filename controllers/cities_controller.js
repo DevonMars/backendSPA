@@ -25,7 +25,7 @@ module.exports = {
                 // console.log(users);
                 res.status(200).json(cities);
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     getId(req, res, next) {
@@ -37,7 +37,7 @@ module.exports = {
                 // console.log(users);
                 res.status(200).json(city);
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     create(req, res, next) {
@@ -59,7 +59,7 @@ module.exports = {
 
         City.create(cityProps)
             .then(city => res.status(201).send(city))
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     edit(req, res, next) {
@@ -69,7 +69,7 @@ module.exports = {
         City.findByIdAndUpdate({_id: cityId}, cityProps)
             .then(() => City.findById({_id: cityId}).populate('stores'))
             .then(city => res.status(201).send(city))
-            .catch((error) => res.status(400).send(({message: error.message})));
+            .catch((error) => res.status(400).send(({error: error.message})));
     },
 
     delete(req, res, next) {
@@ -77,6 +77,6 @@ module.exports = {
 
         City.findByIdAndRemove({_id: cityId})
             .then(city => res.status(202).send(city))
-            .catch((error) => res.status(404).send({message: error.message}));
+            .catch((error) => res.status(404).send({error: error.message}));
     }
 };

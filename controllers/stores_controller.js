@@ -24,7 +24,7 @@ module.exports = {
                 // console.log(users);
                 res.status(200).json(stores);
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     getId(req, res, next) {
@@ -36,7 +36,7 @@ module.exports = {
                 // console.log(users);
                 res.status(200).json(store);
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     create(req, res, next) {
@@ -51,7 +51,7 @@ module.exports = {
 
         Store.create(storeProps)
             .then(store => res.status(201).send(store))
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     edit(req, res, next) {
@@ -61,7 +61,7 @@ module.exports = {
         Store.findByIdAndUpdate({_id: storeId}, storeProps)
             .then(() => Store.findById({_id: storeId}).populate('beers'))
             .then(store => res.status(201).send(store))
-            .catch((error) => res.status(400).send(({message: error.message})));
+            .catch((error) => res.status(400).send(({error: error.message})));
     },
 
     delete(req, res, next) {
@@ -69,6 +69,6 @@ module.exports = {
 
         Store.findByIdAndRemove({_id: storeId})
             .then(store => res.status(202).send(store))
-            .catch((error) => res.status(404).send({message: error.message}));
+            .catch((error) => res.status(404).send({error: error.message}));
     }
 };

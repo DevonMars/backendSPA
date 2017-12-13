@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CitySchema = new Schema({
-    title: String,
-    description: String,
-    province: String,
+    title: {type: String, required: true},
+    description: {type: String, required: true},
+    province: {type: String, required: true},
     imagePath: String,
     stores: [{
         type: Schema.Types.ObjectId,

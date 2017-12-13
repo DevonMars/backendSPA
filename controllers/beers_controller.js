@@ -32,7 +32,7 @@ module.exports = {
                 session.close();
                 res.status(200).send(beers);
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     getId(req, res, next) {
@@ -64,7 +64,7 @@ module.exports = {
                 session.close();
                 res.status(200).send(beer);
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
     },
 
     create(req, res, next) {
@@ -119,10 +119,10 @@ module.exports = {
                 })
                 .catch((error) => {
                     console.log(error);
-                    res.status(400).send({message: error.message})
+                    res.status(400).send({error: error.message})
                 });
             })
-            .catch((error) => res.status(400).send({message: error.message}));
+            .catch((error) => res.status(400).send({error: error.message}));
 
 
     },
@@ -181,9 +181,9 @@ module.exports = {
                                 res.status(200).send(beer);
                             })
                     })
-                    .catch((error) => res.status(400).send(({message: error.message})));
+                    .catch((error) => res.status(400).send(({error: error.message})));
             })
-            .catch((error) => res.status(400).send(({message: error.message})));
+            .catch((error) => res.status(400).send(({error: error.message})));
 
 
 
@@ -211,9 +211,9 @@ module.exports = {
                         res.status(202).send(json);
 
                     })
-                    .catch((error) => res.status(404).send({message: error.message}));
+                    .catch((error) => res.status(404).send({error: error.message}));
             })
-            .catch((error) => res.status(404).send({message: error.message}));
+            .catch((error) => res.status(404).send({error: error.message}));
 
 
     }

@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 
 
 const BeerSchema = new Schema({
-    brand: String,
+    brand: {type: String, unique: true, required: true},
     stores: [{
         type: Schema.Types.ObjectId,
         ref: 'store'
