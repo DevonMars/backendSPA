@@ -1,0 +1,15 @@
+Zorg ervoor dat je lokaal een mongodb en een neo4j database hebt runnen.
+
+open de terminal en run de volgende commands:
+
+1. npm i
+2. npm run start
+
+
+voor tests:
+
+comment de code in server.js  vanaf line 20 t/m 27
+NODE_ENV test wordt namelijk niet goed gepakt.
+
+run hierna:
+1. npm run test
